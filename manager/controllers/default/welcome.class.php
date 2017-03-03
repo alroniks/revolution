@@ -1,11 +1,11 @@
 <?php
 /**
  * Loads the welcome page
- *
  * @package modx
  * @subpackage manager.controllers
  */
- class WelcomeManagerController extends modManagerController {
+class WelcomeManagerController extends modManagerController
+{
     /**
      * Whether or not to show the welcome screen
      * @var boolean $showWelcomeScreen
@@ -18,11 +18,33 @@
      */
     public $dashboard = null;
 
+    public function initialize()
+    {
+        $this->handleLanguageChange();
+        
+        return true;
+    }
+
+    /**
+     * Set language of manager for current session based on selected language
+     * by user on Login screen.
+     */
+    public function handleLanguageChange()
+    {
+        $cultureKey = $this->modx->getOption('cultureKey', $_REQUEST, null);
+        if ($cultureKey) {
+            $cultureKey = $this->modx->sanitizeString($cultureKey);
+            $this->modx->setOption('cultureKey', $cultureKey);
+            $this->modx->setOption('manager_language', $cultureKey);
+        }
+    }
+
     /**
      * Check for any permissions or requirements to load page
      * @return bool
      */
-    public function checkPermissions() {
+    public function checkPermissions()
+    {
         return $this->modx->hasPermission('home');
     }
 
@@ -30,22 +52,24 @@
      * Register custom CSS/JS for the page
      * @return void
      */
-    public function loadCustomCssJs() {
-        $this->addJavascript($this->modx->getOption('manager_url').'assets/modext/widgets/modx.panel.welcome.js');
-        $this->addJavascript($this->modx->getOption('manager_url').'assets/modext/sections/welcome.js');
+    public function loadCustomCssJs()
+    {
+        $this->addJavascript($this->modx->getOption('manager_url') . 'assets/modext/widgets/modx.panel.welcome.js');
+        $this->addJavascript($this->modx->getOption('manager_url') . 'assets/modext/sections/welcome.js');
         $this->addHtml('<script type="text/javascript">
 Ext.onReady(function() {
     MODx.load({
         xtype: "modx-page-welcome"
-        ,dashboard: '.$this->modx->toJSON($this->dashboard->toArray()).'
+        ,dashboard: ' . $this->modx->toJSON($this->dashboard->toArray()) . '
     });
 });
 </script>');
         if ($this->showWelcomeScreen) {
-            $url = $this->modx->getOption('welcome_screen_url',null,'http://misc.modx.com/revolution/welcome.20.html');
+            $url = $this->modx->getOption('welcome_screen_url', null,
+                'http://misc.modx.com/revolution/welcome.20.html');
             $this->addHtml('<script type="text/javascript">
 // <![CDATA[
-Ext.onReady(function() { MODx.loadWelcomePanel("'.$url.'"); });
+Ext.onReady(function() { MODx.loadWelcomePanel("' . $url . '"); });
 // ]]></script>');
         }
     }
@@ -55,7 +79,8 @@ Ext.onReady(function() { MODx.loadWelcomePanel("'.$url.'"); });
      * @param array $scriptProperties
      * @return array
      */
-    public function process(array $scriptProperties = array()) {
+    public function process(array $scriptProperties = array())
+    {
         $placeholders = array();
 
         $this->checkForWelcomeScreen();
@@ -69,22 +94,23 @@ Ext.onReady(function() { MODx.loadWelcomePanel("'.$url.'"); });
      * Check to show if we need to show the Welcome Screen for the user
      * @return void
      */
-    public function checkForWelcomeScreen() {
-        if ($this->modx->getOption('welcome_screen',null,false)) {
+    public function checkForWelcomeScreen()
+    {
+        if ($this->modx->getOption('welcome_screen', null, false)) {
             $this->showWelcomeScreen = true;
             /** @var modSystemSetting $setting */
-            $setting = $this->modx->getObject('modSystemSetting','welcome_screen');
+            $setting = $this->modx->getObject('modSystemSetting', 'welcome_screen');
             if ($setting) {
-                $setting->set('value',false);
+                $setting->set('value', false);
                 $setting->save();
             }
             /** @var modUserSetting $setting */
-            $setting = $this->modx->getObject('modUserSetting',array(
+            $setting = $this->modx->getObject('modUserSetting', array(
                 'key' => 'welcome_screen',
                 'user' => $this->modx->user->get('id'),
             ));
             if ($setting) {
-                $setting->set('value',false);
+                $setting->set('value', false);
                 $setting->save();
             }
             $this->modx->reloadConfig();
@@ -93,10 +119,10 @@ Ext.onReady(function() { MODx.loadWelcomePanel("'.$url.'"); });
 
     /**
      * Return the pagetitle
-     *
      * @return string
      */
-    public function getPageTitle() {
+    public function getPageTitle()
+    {
         return $this->modx->lexicon('dashboard');
     }
 
@@ -104,7 +130,8 @@ Ext.onReady(function() { MODx.loadWelcomePanel("'.$url.'"); });
      * Return the location of the template file
      * @return string
      */
-    public function getTemplateFile() {
+    public function getTemplateFile()
+    {
         return 'welcome.tpl';
     }
 
@@ -112,7 +139,8 @@ Ext.onReady(function() { MODx.loadWelcomePanel("'.$url.'"); });
      * Specify the language topics to load
      * @return array
      */
-    public function getLanguageTopics() {
-        return array('welcome','configcheck');
+    public function getLanguageTopics()
+    {
+        return array('welcome', 'configcheck');
     }
 }
