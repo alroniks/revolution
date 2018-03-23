@@ -16,6 +16,7 @@
         <select id="database-type" name="database_type" autofocus="autofocus">
             <option value="mysql"{if $config.database_type|default EQ "mysql"} selected="selected"{/if}>mysql</option>
             <option value="sqlsrv"{if $config.database_type|default EQ "sqlsrv"} selected="selected"{/if}>sqlsrv</option>
+            <option value="pgsql"{if $config.database_type|default EQ "pgsql"} selected="selected"{/if}>pgsql</option>
         </select>
         &nbsp;<span class="version-msg" id="database-type-error"></span>
     </div>

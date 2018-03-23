@@ -43,7 +43,7 @@ class modAccessPolicyGetListProcessor extends modObjectGetListProcessor {
         $group = $this->getProperty('group');
         if (!empty($group)) {
             $group = is_array($group) ? $group : explode(',',$group);
-            $c->innerJoin('modAccessPolicyTemplateGroup','TemplateGroup','TemplateGroup.id = Template.template_group');
+            $c->innerJoin('modAccessPolicyTemplateGroup','TemplateGroup',"{$this->modx->escape('TemplateGroup')}.{$this->modx->escape('id')} = {$this->modx->escape('Template')}.{$this->modx->escape('template_group')}");
             $c->where(array(
                 'TemplateGroup.name:IN' => $group,
             ));
@@ -60,14 +60,14 @@ class modAccessPolicyGetListProcessor extends modObjectGetListProcessor {
 
     public function prepareQueryAfterCount(xPDOQuery $c) {
         $subc = $this->modx->newQuery('modAccessPermission');
-        $subc->select('COUNT(modAccessPermission.id)');
+        $subc->select('COUNT('.$this->modx->escape('modAccessPermission').'.id)');
         $subc->where(array(
-            'modAccessPermission.template = Template.id',
+            "{$this->modx->escape('modAccessPermission')}.{$this->modx->escape('template')} = {$this->modx->escape('Template')}.{$this->modx->escape('id')}"
         ));
         $subc->prepare();
         $c->select($this->modx->getSelectColumns('modAccessPolicy','modAccessPolicy'));
         $c->select(array(
-            'template_name' => 'Template.name',
+            'template_name' => $this->modx->escape('Template').'.name',
         ));
         $c->select('('.$subc->toSql().') AS '.$this->modx->escape('total_permissions'));
         return $c;

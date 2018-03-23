@@ -239,11 +239,11 @@ class modLexicon {
 
             /* get DB overrides */
             $c= $this->modx->newQuery('modLexiconEntry');
-            $c->innerJoin('modNamespace','Namespace');
+            $c->innerJoin('modNamespace','Namespace', "{$this->modx->escape('Namespace')}.{$this->modx->escape('name')} = {$this->modx->escape('modLexiconEntry')}.{$this->modx->escape('namespace')}");
             $c->where(array(
-                'modLexiconEntry.topic' => $topic,
-                'modLexiconEntry.language' => $language,
-                'Namespace.name' => $namespace,
+                "{$this->modx->escape('modLexiconEntry')}.{$this->modx->escape('topic')}" => $topic,
+                "{$this->modx->escape('modLexiconEntry')}.{$this->modx->escape('language')}" => $language,
+                "{$this->modx->escape('Namespace')}.{$this->modx->escape('name')}" => $namespace
             ));
             $c->sortby($this->modx->getSelectColumns('modLexiconEntry','modLexiconEntry','',array('name')),'ASC');
             $entries= $this->modx->getCollection('modLexiconEntry',$c);

@@ -29,7 +29,7 @@ $xpdo_meta_map['modDbRegisterQueue']= array (
     ),
     'options' => 
     array (
-      'dbtype' => 'mediumtext',
+      'dbtype' => 'text',
       'phptype' => 'array',
     ),
   ),

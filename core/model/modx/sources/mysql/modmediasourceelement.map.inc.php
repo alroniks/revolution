@@ -23,9 +23,7 @@ $xpdo_meta_map['modMediaSourceElement']= array (
   array (
     'source' => 
     array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'attributes' => 'unsigned',
+      'dbtype' => 'integer',
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
@@ -42,9 +40,7 @@ $xpdo_meta_map['modMediaSourceElement']= array (
     ),
     'object' => 
     array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'attributes' => 'unsigned',
+      'dbtype' => 'integer',
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,

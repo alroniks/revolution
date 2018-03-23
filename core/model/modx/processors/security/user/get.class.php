@@ -35,16 +35,16 @@ class modUserGetProcessor extends modObjectGetProcessor {
         $c = $this->modx->newQuery('modUserGroupMember');
         $c->select($this->modx->getSelectColumns('modUserGroupMember','modUserGroupMember'));
         $c->select(array(
-            'role_name' => 'UserGroupRole.name',
-            'user_group_name' => 'UserGroup.name',
-            'user_group_desc' => 'UserGroup.description',
+            'role_name' => $this->modx->escape('UserGroupRole').'.name',
+            'user_group_name' => $this->modx->escape('UserGroup').'.name',
+            'user_group_desc' => $this->modx->escape('UserGroup').'.description'
         ));
         $c->leftJoin('modUserGroupRole','UserGroupRole');
         $c->innerJoin('modUserGroup','UserGroup');
         $c->where(array(
             'member' => $this->object->get('id'),
         ));
-        $c->sortby('modUserGroupMember.rank','ASC');
+        $c->sortby("{$this->modx->escape('modUserGroupMember')}.{$this->modx->escape('rank')}",'ASC');
         $members = $this->modx->getCollection('modUserGroupMember',$c);
 
         $data = array();

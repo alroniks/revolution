@@ -25,8 +25,6 @@ $xpdo_meta_map['modDbRegisterTopic']= array (
     'queue' => 
     array (
       'dbtype' => 'integer',
-      'precision' => '10',
-      'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
       'index' => 'fk',
@@ -41,8 +39,8 @@ $xpdo_meta_map['modDbRegisterTopic']= array (
     ),
     'created' => 
     array (
-      'dbtype' => 'datetime',
-      'phptype' => 'datetime',
+      'dbtype' => 'timestamp',
+      'phptype' => 'timestamp',
       'null' => false,
     ),
     'updated' => 
@@ -53,7 +51,7 @@ $xpdo_meta_map['modDbRegisterTopic']= array (
     ),
     'options' => 
     array (
-      'dbtype' => 'mediumtext',
+      'dbtype' => 'text',
       'phptype' => 'array',
     ),
   ),

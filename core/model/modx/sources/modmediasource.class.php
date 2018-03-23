@@ -64,7 +64,7 @@ abstract class modMediaSource extends modAccessibleSimpleObject implements modMe
 
         /** @var modMediaSource $defaultSource */
         $defaultSource = $xpdo->getObject('sources.modMediaSource',array(
-            'id' => $defaultSourceId,
+            'id' => (int)$defaultSourceId,
         ));
         if (empty($defaultSource) && $fallbackToDefault) {
             $c = $xpdo->newQuery('sources.modMediaSource');

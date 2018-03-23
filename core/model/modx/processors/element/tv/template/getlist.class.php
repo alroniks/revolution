@@ -53,7 +53,6 @@ class modElementTvTemplateGetList extends modProcessor {
         $data = array();
         $limit = $this->getProperty('limit');
         $isLimit = !empty($limit);
-
         /* query for templates */
         $c = $this->modx->newQuery('modTemplate');
         $query = $this->getProperty('query');
@@ -71,10 +70,9 @@ class modElementTvTemplateGetList extends modProcessor {
         }
         
         $data['total'] = $this->modx->getCount('modTemplate',$c);
-        
         $c->leftJoin('modTemplateVarTemplate','TemplateVarTemplates',array(
-            'modTemplate.id = TemplateVarTemplates.templateid',
-            'TemplateVarTemplates.tmplvarid' => $this->getProperty('tv'),
+            "{$this->modx->escape('modTemplate')}.{$this->modx->escape('id')} = {$this->modx->escape('TemplateVarTemplates')}.{$this->modx->escape('templateid')}",
+            "{$this->modx->escape('TemplateVarTemplates')}.{$this->modx->escape('tmplvarid')}" => (int)$this->getProperty('tv')
         ));
         
         $c->select($this->modx->getSelectColumns('modTemplate','modTemplate'));
@@ -83,9 +81,8 @@ class modElementTvTemplateGetList extends modProcessor {
         ));
         $c->select($this->modx->getSelectColumns('modTemplateVarTemplate','TemplateVarTemplates','',array('tmplvarid')));
         $c->sortby($this->getProperty('sort'),$this->getProperty('dir'));
-        if ($isLimit) $c->limit($limit,$this->getProperty('start'));
+        if ($isLimit) $c->limit((int)$limit,(int)$this->getProperty('start'));
         $data['results'] = $this->modx->getCollection('modTemplate',$c);
-
         return $data;
     }
 
