@@ -31,15 +31,17 @@ var coreJSFiles = [
     '<%= dirs.manager %>assets/modext/core/modx.layout.js'
 ];
 var sass = require('node-sass');
+var os = require('os');
 
 module.exports = function(grunt) {
-	// Project configuration.
+    // Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
         dirs: {
             /* just defining some properties */
             lib: 'node_modules/',
             scss: 'sass/',
+            js: '../../../manager/templates/default/js/',
             css: '../../../manager/templates/default/css/',
             template: '../../../manager/templates/default/',
             manager: '../../../manager/',
@@ -283,8 +285,12 @@ module.exports = function(grunt) {
                     title: "grunt",
                     message: "JavaScript uglified."
                 }
-			}
-		}
+            }
+        },
+        icons: {
+            src: '<%= dirs.scss %>font-awesome/_icons.scss',
+            dest: '<%= dirs.js %>icons.json'
+        }
 	});
 
 	grunt.loadNpmTasks('grunt-autoprefixer');
@@ -298,7 +304,38 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-imageoptim');
 
     // Tasks
+    grunt.registerTask('icons', 'Task that generates icons for dropdown', function () {
+        grunt.config.requires('icons.src');
+        grunt.config.requires('icons.dest');
+
+        var src = grunt.config('icons.src');
+
+        if (!grunt.file.exists(src)) {
+            grunt.fail.warn('File "' + src + '" not found.');
+            return false;
+        }
+
+        var content = grunt.file.read(src)
+            .replace(/\/\*[\w\s()]+\*\//gm, '')
+            .replace(/\.#{\$[a-z-]+}/gm, 'fa')
+            .replace(/:before.+$/gm, '')
+            .trim()
+            .split(os.EOL);
+
+        for (var i in content) {
+            if (!content.hasOwnProperty(i)) {
+                continue;
+            }
+            content[i] = {
+                class: content[i],
+                name: content[i].replace('fa-', '')
+            };
+        }
+
+        grunt.file.write(grunt.config('icons.dest'), JSON.stringify(content));
+    });
+
     grunt.registerTask('default', ['notify:watch', 'watch']);
-    grunt.registerTask('build', ['copy', 'sass:dev', 'autoprefixer', 'notify:prefixes', 'notify:sass', 'cssmin:compress', 'uglify:jsgrps', 'notify:uglify']);
+    grunt.registerTask('build', ['copy', 'sass:dev', 'autoprefixer', 'notify:prefixes', 'notify:sass', 'cssmin:compress', 'uglify:jsgrps', 'notify:uglify', 'icons']);
     grunt.registerTask('compress', ['uglify:jsgrps', 'notify:uglify']);
 };
