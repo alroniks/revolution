@@ -2,6 +2,7 @@
 
 namespace MODX\Revolution;
 
+use MODX\Revolution\Sources\modAccessMediaSource;
 use xPDO\Om\xPDOSimpleObject;
 use xPDO\xPDO;
 
@@ -10,24 +11,14 @@ use xPDO\xPDO;
  *
  * {@internal Implement a derivative to define the behavior and attributes of
  * an actual user or system that is intended to access modX or a modX service.}
- *
- * @property modAccess[] $Acls
- *
- * @abstract
- * @package MODX\Revolution
  */
 abstract class modPrincipal extends xPDOSimpleObject
 {
     /** @var modX|xPDO $xpdo */
     public $xpdo;
 
-    /**
-     * Stores a collection of key-value pairs identifying policy authority.
-     *
-     * @var array
-     * @access protected
-     */
-    protected $_attributes = [];
+    /** A collection of key-value pairs identifying policy authority. */
+    protected $attributes = [];
 
     /**
      * Load attributes of the principal that define access to secured objects.
@@ -38,34 +29,45 @@ abstract class modPrincipal extends xPDOSimpleObject
      *
      * @abstract
      *
-     * @param array   $target  The target modAccess classes to load attributes from.
+     * @param array   $targets  The target modAccess classes to load attributes from.
      * @param string  $context Context to check within, defaults to current  context.
-     * @param boolean $reload  If true, the attributes will be reloaded and the session updated.
+     * @param bool    $reload  If true, the attributes will be reloaded and the session updated.
      */
-    public function loadAttributes($target, $context = '', $reload = false)
-    {
-        $this->_attributes = [];
-    }
+    abstract public function loadAttributes(array $targets, $context = '', $reload = false);
 
     /**
      * Get the attributes for this principal.
      *
      * @param array   $targets An array of target modAccess classes to load.
      * @param string  $context The context to check within. Defaults to active context.
-     * @param boolean $reload  If true, the attributes will be reloaded and the session updated.
+     * @param bool    $reload  If true, the attributes will be reloaded and the session updated.
      *
      * @return array An array of attributes on the principal
      */
     public function getAttributes($targets = [], $context = '', $reload = false)
     {
+        echo modAccessContext::class;
+
+        $def = [
+            modAccessContext::class,
+            modAccessResourceGroup::class,
+            modAccessCategory::class,
+            modAccessMediaSource::class,
+            modAccessNamespace::class
+        ];
+
+        print_r($def);
+        die();
+
         $context = !empty($context) ? $context : $this->xpdo->context->get('key');
         if (!is_array($targets) || empty($targets)) {
             $targets = explode(',', $this->xpdo->getOption('principal_targets', null,
                 'modAccessContext,modAccessResourceGroup,modAccessCategory,sources.modAccessMediaSource,modAccessNamespace'));
             array_walk($targets, 'trim');
         }
+
         $this->loadAttributes($targets, $context, $reload);
 
-        return $this->_attributes[$context];
+        return $this->attributes[$context];
     }
 }

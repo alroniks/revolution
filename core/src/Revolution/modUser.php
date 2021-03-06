@@ -149,7 +149,7 @@ class modUser extends modPrincipal
      *
      * {@inheritdoc}
      */
-    public function loadAttributes($target, $context = '', $reload = false)
+    public function loadAttributes(array $targets, $context = '', $reload = false)
     {
         $context = !empty($context) ? $context : $this->xpdo->context->get('key');
         $id = $this->get('id') ? (string)$this->get('id') : '0';
@@ -178,7 +178,7 @@ class modUser extends modPrincipal
         if (!isset($this->_attributes[$context])) {
             $this->_attributes[$context] = [];
         }
-        $target = (array)$target;
+        $target = $targets;
         foreach ($target as $t) {
             if (!isset($this->_attributes[$context][$t])) {
                 $this->_attributes[$context][$t] = $this->xpdo->call(

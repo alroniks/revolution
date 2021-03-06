@@ -149,4 +149,9 @@ class modUserGroup extends modPrincipal
 
         return $this->xpdo->getCollection(modResourceGroup::class, $c);
     }
+
+    public function loadAttributes(array $targets, $context = '', $reload = false)
+    {
+        // TODO: Implement loadAttributes() method.
+    }
 }
