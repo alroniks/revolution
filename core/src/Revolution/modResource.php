@@ -1056,9 +1056,8 @@ class modResource extends modAccessibleSimpleObject implements modResourceInterf
                         $parentAlias = "{$pathParentId}";
                     }
 
-                    // If we are ignoring the alias for this parent, simply skip adding it to the array for the alias
-                    // path.
-                    if ($currResource['alias_visible'] == 1) {
+                    // If we are ignoring the alias for this parent, simply skip adding it to the array for the alias path.
+                    if ($currResource['alias_visible'] === 1) {
                         $parentResources[] = "{$parentAlias}";
                     }
 

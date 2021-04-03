@@ -1017,7 +1017,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,name: 'isfolder'
             ,id: 'modx-resource-isfolder'
             ,inputValue: 1
-            ,checked: parseInt(config.record.isfolder) || 0
+            ,checked: !!parseInt(config.record.isfolder)
         },{
             xtype: 'xcheckbox'
             ,boxLabel: _('resource_show_in_tree')
@@ -1026,8 +1026,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,name: 'show_in_tree'
             ,id: 'modx-resource-show-in-tree'
             ,inputValue: 1
-            ,checked: parseInt(config.record.show_in_tree)
-
+            ,checked: !!parseInt(config.record.show_in_tree)
         },{
             xtype: 'xcheckbox'
             ,boxLabel: _('resource_hide_children_in_tree')
@@ -1037,7 +1036,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,id: 'modx-resource-hide-children-in-tree'
             ,cls: 'warning'
             ,inputValue: 1
-            ,checked: parseInt(config.record.hide_children_in_tree)
+            ,checked: !!parseInt(config.record.hide_children_in_tree)
         },{
             xtype: 'xcheckbox'
             ,boxLabel: _('resource_alias_visible')
@@ -1054,7 +1053,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,hideLabel: true
             ,name: 'uri_override'
             ,value: 1
-            ,checked: parseInt(config.record.uri_override) ? true : false
+            ,checked: !!parseInt(config.record.uri_override)
             ,id: 'modx-resource-uri-override'
 
         },{
@@ -1066,7 +1065,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,maxLength: 255
             ,anchor: '70%'
             ,value: config.record.uri || ''
-            ,hidden: !config.record.uri_override
+            ,hidden: !parseInt(config.record.uri_override)
         }];
     }
 
@@ -1079,7 +1078,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,name: 'richtext'
             ,id: 'modx-resource-richtext'
             ,inputValue: 1
-            ,checked: parseInt(config.record.richtext)
+            ,checked: !!parseInt(config.record.richtext)
         },{
             xtype: 'xcheckbox'
             ,boxLabel: _('resource_searchable')
@@ -1088,7 +1087,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,name: 'searchable'
             ,id: 'modx-resource-searchable'
             ,inputValue: 1
-            ,checked: parseInt(config.record.searchable)
+            ,checked: !!parseInt(config.record.searchable)
         },{
             xtype: 'xcheckbox'
             ,boxLabel: _('resource_cacheable')
@@ -1097,8 +1096,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,name: 'cacheable'
             ,id: 'modx-resource-cacheable'
             ,inputValue: 1
-            ,checked: parseInt(config.record.cacheable)
-
+            ,checked: !!parseInt(config.record.cacheable)
         },{
             xtype: 'xcheckbox'
             ,boxLabel: _('resource_syncsite')
@@ -1107,7 +1105,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,name: 'syncsite'
             ,id: 'modx-resource-syncsite'
             ,inputValue: 1
-            ,checked: config.record.syncsite !== undefined && config.record.syncsite !== null ? parseInt(config.record.syncsite) : true
+            ,checked: !!parseInt(config.record.syncsite)
         }];
     }
 

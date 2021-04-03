@@ -1245,7 +1245,7 @@ MODx.getQRSettings = function(id,va) {
                 ,name: 'hide_children_in_tree'
                 ,id: 'modx-'+id+'-hide_children_in_tree'
                 ,inputValue: 1
-                ,checked: va['hide_children_in_tree'] != undefined ? va['hide_children_in_tree'] : false
+                ,checked: !!parseInt(va['hide_children_in_tree'])
             },{
                 xtype: 'xcheckbox'
                 ,boxLabel: _('resource_alias_visible')
@@ -1254,7 +1254,7 @@ MODx.getQRSettings = function(id,va) {
                 ,name: 'alias_visible'
                 ,id: 'modx-'+id+'-alias-visible'
                 ,inputValue: 1
-                ,checked: va['alias_visible'] != undefined ? va['alias_visible'] : 1
+                ,checked: !!parseInt(va['alias_visible'])
             },{
                 xtype: 'xcheckbox'
                 ,boxLabel: _('resource_uri_override')
@@ -1263,7 +1263,7 @@ MODx.getQRSettings = function(id,va) {
                 ,name: 'uri_override'
                 ,id: 'modx-'+id+'-uri-override'
                 ,value: 1
-                ,checked: parseInt(va['uri_override']) ? true : false
+                ,checked: !!parseInt(va['uri_override'])
                 ,listeners: {'check': {fn:MODx.handleFreezeUri}}
             },{
                 xtype: 'textfield'
