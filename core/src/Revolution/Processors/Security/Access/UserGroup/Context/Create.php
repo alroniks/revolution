@@ -60,6 +60,8 @@ class Create extends CreateProcessor
             $this->addFieldError('target', $this->modx->lexicon('context_err_nf'));
         }
 
+//        $authority = $this->modx->getObject(::class, $this->getProperty('target'));
+
         $policy = $this->modx->getObject(modAccessPolicy::class, $this->getProperty('policy'));
         if (!$policy) {
             $this->addFieldError('policy', $this->modx->lexicon('access_policy_err_nf'));
@@ -70,6 +72,7 @@ class Create extends CreateProcessor
             'principal_class' => modUserGroup::class,
             'target' => $this->object->get('target'),
             'policy' => $this->object->get('policy'),
+//            'authority' => $authority
         ])) {
             $this->addFieldError('target', $this->modx->lexicon($this->objectType . '_err_ae'));
         }

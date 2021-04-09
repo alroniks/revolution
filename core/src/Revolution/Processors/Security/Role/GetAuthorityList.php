@@ -34,7 +34,7 @@ class GetAuthorityList extends GetList
     {
         $objectArray = $object->toArray();
         $objectArray['name'] = $object->get('name') . ' - ' . $object->get('authority');
-        $objectArray['id'] = $object->get('authority');
+        $objectArray['id'] = $object->get('id');
 
         return $objectArray;
     }

@@ -107,4 +107,15 @@ class GetList extends GetListProcessor
 
         return $objectArray;
     }
+
+    public function getData(): array
+    {
+        $data = parent::getData();
+
+        if ($this->getProperty('addNone', false)) {
+            ++$data['total']; // fix total value after manual appending
+        }
+
+        return $data;
+    }
 }
